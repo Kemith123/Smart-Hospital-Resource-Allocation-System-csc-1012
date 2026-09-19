@@ -5,7 +5,42 @@
 
 int main()
 {
-    printf("Smart Hospital System\n");
+    int choice;
+
+    do
+    {
+        displayMenu();
+
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice)
+        {
+            case 1:
+                printf("\nRegister Patient selected.\n");
+                break;
+
+            case 2:
+                printf("\nDisplay Bed Occupancy selected.\n");
+                break;
+
+            case 3:
+                printf("\nDisplay Patient Priority selected.\n");
+                break;
+
+            case 4:
+                printf("\nGenerate Reports selected.\n");
+                break;
+
+            case 5:
+                printf("\nExiting program...\n");
+                break;
+
+            default:
+                printf("\nInvalid choice. Please try again.\n");
+        }
+
+    } while(choice != 5);
 
 
 
