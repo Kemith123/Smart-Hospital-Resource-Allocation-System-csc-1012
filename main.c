@@ -19,12 +19,15 @@ float wardCosts[MAX_PATIENTS];
 float grossTotals[MAX_PATIENTS];
 float discounts[MAX_PATIENTS];
 float finalBills[MAX_PATIENTS];
+int assignedBedNumbers[MAX_PATIENTS];
 
 int patientCount = 0;
 int specialtyQueue[4] = {0};
 
 void displayMenu();
 void registerPatient();
+void allocateBed(int patientIndex);
+void displayBedOccupancy();
 
 int main()
 {
@@ -44,7 +47,7 @@ int main()
                 break;
 
             case 2:
-                printf("\nDisplay Bed Occupancy selected.\n");
+                displayBedOccupancy();
                 break;
 
             case 3:
@@ -181,9 +184,84 @@ void registerPatient()
         wardIDs[patientCount] = 0;
         admissionDays[patientCount] = 0;
     }
+    
+ patientCount++;
 
-    patientCount++;
+if(admittedToWard[patientCount - 1] == 1)
+   {
+    allocateBed(patientCount - 1);
+   }
 
-    printf("\nPatient registered successfully!\n");
+printf("\nPatient registered successfully!\n");
+    
 }
 
+void allocateBed(int patientIndex)
+{
+    int wardIndex;
+    int bedIndex;
+    int bedFound = 0;
+
+    wardIndex = wardIDs[patientIndex] - 1;
+
+    for(bedIndex = 0; bedIndex < wardCapacities[wardIndex]; bedIndex++)
+    {
+        if(bedOccupancy[wardIndex][bedIndex] == 0)
+        {
+            bedOccupancy[wardIndex][bedIndex] = 1;
+
+            assignedBedNumbers[patientIndex] = bedIndex + 1;
+
+            bedFound = 1;
+
+            printf("\nBed allocated successfully!\n");
+            printf("Ward : %s\n", wardNames[wardIndex]);
+            printf("Bed  : #%d\n", assignedBedNumbers[patientIndex]);
+
+            break;
+        }
+    }
+
+    if(bedFound == 0)
+    {
+        assignedBedNumbers[patientIndex] = 0;
+
+        printf("\nNo available beds in %s.\n",
+               wardNames[wardIndex]);
+
+        printf("Patient cannot be allocated a bed.\n");
+    }
+}
+
+
+void displayBedOccupancy()
+{
+    int wardIndex;
+    int bedIndex;
+
+    printf("\n========================================\n");
+    printf("          BED OCCUPANCY\n");
+    printf("========================================\n");
+
+    for(wardIndex = 0; wardIndex < 4; wardIndex++)
+    {
+        printf("\nWard: %s\n", wardNames[wardIndex]);
+
+        for(bedIndex = 0;
+            bedIndex < wardCapacities[wardIndex];
+            bedIndex++)
+        {
+            printf("Bed %02d : ",
+                   bedIndex + 1);
+
+            if(bedOccupancy[wardIndex][bedIndex] == 0)
+            {
+                printf("Available\n");
+            }
+            else
+            {
+                printf("Occupied\n");
+            }
+        }
+    }
+}
