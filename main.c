@@ -3,6 +3,7 @@
 
 #define MAX_PATIENTS 100
 
+
 /* Patient data */
 char patientNames[MAX_PATIENTS][50];
 int patientAges[MAX_PATIENTS];
