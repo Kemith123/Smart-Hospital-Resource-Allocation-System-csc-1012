@@ -63,10 +63,13 @@ float calculateFinalBill(int patientIndex);
 void displayPatientBill(int patientIndex);
 void displayPatientPriority();
 void generateReports();
+void saveBedStatus();
+void loadBedStatus();
 
 int main()
 {
     int choice;
+    loadBedStatus();
 
     do
     {
@@ -247,6 +250,8 @@ void allocateBed(int patientIndex)
             bedOccupancy[wardIndex][bedIndex] = 1;
 
             assignedBedNumbers[patientIndex] = bedIndex + 1;
+
+            saveBedStatus();
 
             bedFound = 1;
 
@@ -701,4 +706,62 @@ void generateReports()
     }
 
     printf("===============================================\n");
+}
+
+void saveBedStatus()
+{
+    FILE *file;
+    int wardIndex;
+    int bedIndex;
+
+    file = fopen("beds_status.txt", "w");
+
+    if(file == NULL)
+    {
+        printf("\nUnable to save bed status.\n");
+        return;
+    }
+
+    for(wardIndex = 0; wardIndex < 4; wardIndex++)
+    {
+        for(bedIndex = 0;
+            bedIndex < wardCapacities[wardIndex];
+            bedIndex++)
+        {
+            fprintf(file, "%d ",
+                    bedOccupancy[wardIndex][bedIndex]);
+        }
+
+        fprintf(file, "\n");
+    }
+
+    fclose(file);
+}
+
+void loadBedStatus()
+{
+    FILE *file;
+    int wardIndex;
+    int bedIndex;
+
+    file = fopen("beds_status.txt", "r");
+
+    if(file == NULL)
+    {
+        return;
+    }
+
+    for(wardIndex = 0; wardIndex < 4; wardIndex++)
+    {
+        for(bedIndex = 0;
+            bedIndex < wardCapacities[wardIndex];
+            bedIndex++)
+        {
+            fscanf(file,
+                   "%d",
+                   &bedOccupancy[wardIndex][bedIndex]);
+        }
+    }
+
+    fclose(file);
 }
