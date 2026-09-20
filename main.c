@@ -137,16 +137,29 @@ void registerPatient()
     printf("1. Normal\n");
     printf("2. Urgent\n");
     printf("3. Critical\n");
+    
     printf("Enter urgency level: ");
     scanf("%d", &urgencyLevels[patientCount]);
+     if(urgencyLevels[patientCount] < 1 ||urgencyLevels[patientCount] > 3)
+     {
+      printf("Invalid urgency level. Enter 1, 2, or 3: ");
+      scanf("%d", &urgencyLevels[patientCount]);
+     }
 
     printf("\nSpecialty\n");
     printf("1. General Practice\n");
     printf("2. Paediatrics\n");
     printf("3. Cardiology\n");
     printf("4. Neurology\n");
+    
     printf("Enter specialty ID: ");
     scanf("%d", &specialtyIDs[patientCount]);
+     if(specialtyIDs[patientCount] < 1 ||
+      specialtyIDs[patientCount] > 4)
+    {
+    printf("Invalid specialty. Enter a number from 1 to 4: ");
+    scanf("%d", &specialtyIDs[patientCount]);
+    }
 
     printf("\nIs admitted to ward?\n");
     printf("1. Yes\n");
