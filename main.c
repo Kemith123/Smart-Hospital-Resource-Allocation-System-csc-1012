@@ -3,6 +3,7 @@
 
 #define MAX_PATIENTS 100
 
+/* Patient data */
 char patientNames[MAX_PATIENTS][50];
 int patientAges[MAX_PATIENTS];
 int urgencyLevels[MAX_PATIENTS];
@@ -21,6 +22,9 @@ float finalBills[MAX_PATIENTS];
 
 int patientCount = 0;
 int specialtyQueue[4] = {0};
+
+void displayMenu();
+void registerPatient();
 
 int main()
 {
@@ -78,30 +82,11 @@ const char wardNames[4][50] = {"General Ward","Paediatric Ward","Surgical Ward",
 
 const float wardDailyRates[4] = {3000.00,6000.00,12000.00,25000.00};
 
-const int wardCapacities[4] = {20,10,10,05};
+const int wardCapacities[4] = {20,10,10,5};
 
 /* Bed occupancy */
 int bedOccupancy[4][20] = {0};
 
-/* Patient data */
-char patientNames[MAX_PATIENTS][50];
-int patientAges[MAX_PATIENTS];
-int urgencyLevels[MAX_PATIENTS];
-int specialtyIDs[MAX_PATIENTS];
-int admittedToWard[MAX_PATIENTS];
-int wardIDs[MAX_PATIENTS];
-int admissionDays[MAX_PATIENTS];
-
-float waitingTimes[MAX_PATIENTS];
-float baseFees[MAX_PATIENTS];
-float surcharges[MAX_PATIENTS];
-float wardCosts[MAX_PATIENTS];
-float grossTotals[MAX_PATIENTS];
-float discounts[MAX_PATIENTS];
-float finalBills[MAX_PATIENTS];
-
-int patientCount = 0;
-int specialtyQueue[4] = {0};
 
 
  return 0;
