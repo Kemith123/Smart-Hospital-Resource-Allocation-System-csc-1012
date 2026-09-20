@@ -30,6 +30,8 @@ const char specialtyNames[4][30] = { "General Practice","Paediatrics", "Cardiolo
 const float consultationFees[4] = {1500.00,2500.00, 4500.00, 5000.00};
 
 const char consultationTimes[4][30] = { "15 mins","20 mins","30 mins","30 mins"};
+const int consultationTimeMinutes[4] = {15, 20, 30,30};
+
 
 const int dailyPatientCaps[4] = { 30, 20,12,10};
 
@@ -51,6 +53,7 @@ void displayMenu();
 void registerPatient();
 void allocateBed(int patientIndex);
 void displayBedOccupancy();
+float calculateWaitingTime(int specialtyID);
 
 int main()
 {
@@ -184,8 +187,10 @@ void registerPatient()
         wardIDs[patientCount] = 0;
         admissionDays[patientCount] = 0;
     }
+
     
- patientCount++;
+waitingTimes[patientCount] = calculateWaitingTime(specialtyIDs[patientCount]);
+patientCount++;
 
 if(admittedToWard[patientCount - 1] == 1)
    {
@@ -264,4 +269,20 @@ void displayBedOccupancy()
             }
         }
     }
+}
+
+
+float calculateWaitingTime(int specialtyID)
+{
+    int specialtyIndex;
+    float waitingTime;
+
+    specialtyIndex = specialtyID - 1;
+
+    waitingTime = specialtyQueue[specialtyIndex]
+                  * consultationTimeMinutes[specialtyIndex];
+
+    specialtyQueue[specialtyIndex]++;
+
+    return waitingTime;
 }
