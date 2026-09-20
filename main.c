@@ -55,6 +55,12 @@ void allocateBed(int patientIndex);
 void displayBedOccupancy();
 float calculateWaitingTime(int specialtyID);
 
+float calculateSurcharge(int patientIndex);
+float calculateWardCost(int patientIndex);
+float calculateGrossTotal(int patientIndex);
+float calculateDiscount(int patientIndex);
+float calculateFinalBill(int patientIndex);
+
 int main()
 {
     int choice;
@@ -188,14 +194,35 @@ void registerPatient()
         admissionDays[patientCount] = 0;
     }
 
-    
-waitingTimes[patientCount] = calculateWaitingTime(specialtyIDs[patientCount]);
+baseFees[patientCount] =
+consultationFees[specialtyIDs[patientCount] - 1];
+
+waitingTimes[patientCount] =
+    calculateWaitingTime(specialtyIDs[patientCount]);
+
+surcharges[patientCount] =
+    calculateSurcharge(patientCount);
+
+wardCosts[patientCount] =
+    calculateWardCost(patientCount);
+
+grossTotals[patientCount] =
+    calculateGrossTotal(patientCount);
+
+discounts[patientCount] =
+    calculateDiscount(patientCount);
+
+finalBills[patientCount] =
+    calculateFinalBill(patientCount);
+
 patientCount++;
 
-if(admittedToWard[patientCount - 1] == 1)
+  if(admittedToWard[patientCount - 1] == 1)
    {
     allocateBed(patientCount - 1);
    }
+    
+
 
 printf("\nPatient registered successfully!\n");
     
@@ -285,4 +312,73 @@ float calculateWaitingTime(int specialtyID)
     specialtyQueue[specialtyIndex]++;
 
     return waitingTime;
+}
+
+float calculateSurcharge(int patientIndex)
+{
+    float surcharge = 0;
+
+    if(urgencyLevels[patientIndex] == 1)
+    {
+        surcharge = 0;
+    }
+    else if(urgencyLevels[patientIndex] == 2)
+    {
+        surcharge = baseFees[patientIndex] * 0.20;
+    }
+    else if(urgencyLevels[patientIndex] == 3)
+    {
+        surcharge = baseFees[patientIndex] * 0.50;
+    }
+
+    return surcharge;
+}
+
+float calculateWardCost(int patientIndex)
+{
+    float wardCost = 0;
+
+    if(admittedToWard[patientIndex] == 1)
+    {
+        int wardIndex = wardIDs[patientIndex] - 1;
+
+        wardCost = admissionDays[patientIndex]
+                   * wardDailyRates[wardIndex];
+    }
+
+    return wardCost;
+}
+
+float calculateGrossTotal(int patientIndex)
+{
+    float grossTotal;
+
+    grossTotal = baseFees[patientIndex]
+                 + surcharges[patientIndex]
+                 + wardCosts[patientIndex];
+
+    return grossTotal;
+}
+
+float calculateDiscount(int patientIndex)
+{
+    float discount = 0;
+
+    if(patientAges[patientIndex] < 5 ||
+       patientAges[patientIndex] > 65)
+    {
+        discount = grossTotals[patientIndex] * 0.15;
+    }
+
+    return discount;
+}
+
+float calculateFinalBill(int patientIndex)
+{
+    float finalBill;
+
+    finalBill = grossTotals[patientIndex]
+                - discounts[patientIndex];
+
+    return finalBill;
 }
