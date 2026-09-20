@@ -61,6 +61,7 @@ float calculateGrossTotal(int patientIndex);
 float calculateDiscount(int patientIndex);
 float calculateFinalBill(int patientIndex);
 void displayPatientBill(int patientIndex);
+void displayPatientPriority();
 
 int main()
 {
@@ -84,7 +85,7 @@ int main()
                 break;
 
             case 3:
-                printf("\nDisplay Patient Priority selected.\n");
+                 displayPatientPriority();
                 break;
 
             case 4:
@@ -497,4 +498,79 @@ void displayPatientBill(int patientIndex)
 
     printf("\n");
     printf("====================================================\n");
+}
+
+void displayPatientPriority()
+{
+    int priorityOrder[MAX_PATIENTS];
+    int i;
+    int j;
+    int temp;
+
+    for(i = 0; i < patientCount; i++)
+    {
+        priorityOrder[i] = i;
+    }
+
+    /* Stable sorting based on urgency level */
+    for(i = 0; i < patientCount - 1; i++)
+    {
+        for(j = 0; j < patientCount - i - 1; j++)
+        {
+            if(urgencyLevels[priorityOrder[j]]
+               < urgencyLevels[priorityOrder[j + 1]])
+            {
+                temp = priorityOrder[j];
+
+                priorityOrder[j] =
+                    priorityOrder[j + 1];
+
+                priorityOrder[j + 1] = temp;
+            }
+        }
+    }
+
+    printf("\n========================================\n");
+    printf("          PATIENT PRIORITY\n");
+    printf("========================================\n");
+
+    if(patientCount == 0)
+    {
+        printf("No patients registered.\n");
+        return;
+    }
+
+    for(i = 0; i < patientCount; i++)
+    {
+        int index = priorityOrder[i];
+
+        printf("\nPriority %d\n", i + 1);
+        printf("Patient ID : PAT-%04d\n",
+               1001 + index);
+        printf("Patient Name : %s\n",
+               patientNames[index]);
+
+        printf("Urgency Level : ");
+
+        if(urgencyLevels[index] == 3)
+        {
+            printf("Level 3 (Critical)\n");
+        }
+        else if(urgencyLevels[index] == 2)
+        {
+            printf("Level 2 (Urgent)\n");
+        }
+        else
+        {
+            printf("Level 1 (Normal)\n");
+        }
+
+        printf("Specialty : %s\n",
+               specialtyNames[specialtyIDs[index] - 1]);
+
+        printf("Estimated Waiting Time : %.2f mins\n",
+               waitingTimes[index]);
+
+        printf("----------------------------------------\n");
+    }
 }
