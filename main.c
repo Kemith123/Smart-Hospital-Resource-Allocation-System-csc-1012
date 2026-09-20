@@ -65,6 +65,7 @@ void displayPatientPriority();
 void generateReports();
 void saveBedStatus();
 void loadBedStatus();
+void savePatientRecord(int patientIndex);
 
 int main()
 {
@@ -232,6 +233,7 @@ patientCount++;
 
 printf("\nPatient registered successfully!\n");
 displayPatientBill(patientCount - 1);
+savePatientRecord(patientCount - 1);
     
 }
 
@@ -762,6 +764,56 @@ void loadBedStatus()
                    &bedOccupancy[wardIndex][bedIndex]);
         }
     }
+
+    fclose(file);
+}
+
+void savePatientRecord(int patientIndex)
+{
+    FILE *file;
+
+    file = fopen("patient_records.txt", "a");
+
+    if(file == NULL)
+    {
+        printf("\nUnable to save patient record.\n");
+        return;
+    }
+
+    fprintf(file, "========================================\n");
+    fprintf(file, "Patient ID : PAT-%04d\n",
+            1001 + patientIndex);
+    fprintf(file, "Patient Name : %s\n",
+            patientNames[patientIndex]);
+    fprintf(file, "Age : %d\n",
+            patientAges[patientIndex]);
+    fprintf(file, "Urgency Level : %d\n",
+            urgencyLevels[patientIndex]);
+    fprintf(file, "Specialty : %s\n",
+            specialtyNames[specialtyIDs[patientIndex] - 1]);
+
+    fprintf(file, "Base Consultation Fee : LKR %.2f\n",
+            baseFees[patientIndex]);
+
+    fprintf(file, "Emergency Surcharge : LKR %.2f\n",
+            surcharges[patientIndex]);
+
+    fprintf(file, "Ward Stay Cost : LKR %.2f\n",
+            wardCosts[patientIndex]);
+
+    fprintf(file, "Gross Total : LKR %.2f\n",
+            grossTotals[patientIndex]);
+
+    fprintf(file, "Discount : LKR %.2f\n",
+            discounts[patientIndex]);
+
+    fprintf(file, "Final Payable Amount : LKR %.2f\n",
+            finalBills[patientIndex]);
+
+    fprintf(file, "Estimated Waiting Time : %.2f mins\n",
+            waitingTimes[patientIndex]);
+
+    fprintf(file, "========================================\n\n");
 
     fclose(file);
 }
