@@ -164,16 +164,32 @@ void registerPatient()
     printf("\nIs admitted to ward?\n");
     printf("1. Yes\n");
     printf("0. No\n");
+    
     printf("Enter choice: ");
     scanf("%d", &admittedToWard[patientCount]);
+    while(admittedToWard[patientCount] != 0 && admittedToWard[patientCount] != 1)
+     {
+    printf("Invalid choice. Enter 1 for Yes or 0 for No: ");
+    scanf("%d", &admittedToWard[patientCount]);
+     }
 
     if(admittedToWard[patientCount] == 1)
     {
         printf("Enter ward ID (1-4): ");
         scanf("%d", &wardIDs[patientCount]);
+        while(wardIDs[patientCount] < 1 || wardIDs[patientCount] > 4)
+          {
+              printf("Invalid ward. Enter a number from 1 to 4: ");
+              scanf("%d", &wardIDs[patientCount]);
+          }
 
         printf("Enter number of days admitted: ");
         scanf("%d", &admissionDays[patientCount]);
+        while(admissionDays[patientCount] <= 0)
+          {
+            printf("Invalid number of days. Enter a positive number: ");
+            scanf("%d", &admissionDays[patientCount]);
+          }
     }
     else
     {
